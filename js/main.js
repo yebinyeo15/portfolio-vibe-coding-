@@ -21,6 +21,40 @@ const initHeroSwiper = () => {
     });
 };
 
+const initSectionReveal = () => {
+    const sections = document.querySelectorAll('section, .main .con');
+
+    if (!sections.length) return;
+
+    if (
+        typeof IntersectionObserver === 'undefined' ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+        sections.forEach((section) => section.classList.add('active'));
+        return;
+    }
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target);
+            });
+        },
+        {
+            threshold: 0.15,
+            rootMargin: '0px 0px -10% 0px',
+        },
+    );
+
+    sections.forEach((section) => {
+        section.classList.add('reveal-section');
+        observer.observe(section);
+    });
+};
+
 const initHeroControl = () => {
     const control = document.querySelector('#hero .control');
     const hero = document.querySelector('.hero-swiper');
@@ -87,6 +121,41 @@ const initPromotionSlider = () => {
     });
 };
 
+const initPromotionHeartButtons = () => {
+    const slider = document.querySelector('.promotion-swiper');
+    const heartButtonSelector = '.card-actions button:nth-child(2)';
+
+    if (!slider) return;
+
+    slider.querySelectorAll(heartButtonSelector).forEach((button) => {
+        const defaultIcon = button.querySelector('img');
+
+        if (defaultIcon) {
+            defaultIcon.classList.add('heart-icon-default');
+
+            const activeIcon = defaultIcon.cloneNode(true);
+
+            activeIcon.src = 'images/icon-bookmark-active.svg';
+            activeIcon.classList.replace('heart-icon-default', 'heart-icon-active');
+            activeIcon.setAttribute('aria-hidden', 'true');
+            button.appendChild(activeIcon);
+        }
+
+        button.setAttribute('aria-pressed', 'false');
+    });
+
+    slider.addEventListener('click', (event) => {
+        const button = event.target.closest(heartButtonSelector);
+
+        if (!button || !slider.contains(button)) return;
+
+        const isLiked = button.classList.toggle('is-liked');
+
+        button.setAttribute('aria-pressed', String(isLiked));
+        button.setAttribute('aria-label', isLiked ? '저장 취소하기' : '저장하기');
+    });
+};
+
 const initLiveSlider = () => {
     const slider = document.querySelector('.live-swiper');
     const list = slider?.querySelector('.live-now__list');
@@ -112,6 +181,41 @@ const initLiveSlider = () => {
             enabled: true,
         },
     });
+};
+
+const initLiveCountdown = () => {
+    const countdown = document.querySelector('.con2 .live-heading strong');
+
+    if (!countdown) return;
+
+    const timeParts = countdown.textContent
+        .split(':')
+        .map((part) => Number.parseInt(part.trim(), 10));
+
+    if (timeParts.length !== 3 || timeParts.some(Number.isNaN)) return;
+
+    let remainingSeconds = timeParts[0] * 3600 + timeParts[1] * 60 + timeParts[2];
+
+    const renderCountdown = () => {
+        const hours = Math.floor(remainingSeconds / 3600);
+        const minutes = Math.floor((remainingSeconds % 3600) / 60);
+        const seconds = remainingSeconds % 60;
+
+        countdown.textContent = [hours, minutes, seconds]
+            .map((value) => String(value).padStart(2, '0'))
+            .join(' : ');
+    };
+
+    renderCountdown();
+
+    const timer = window.setInterval(() => {
+        remainingSeconds = Math.max(remainingSeconds - 1, 0);
+        renderCountdown();
+
+        if (remainingSeconds === 0) {
+            window.clearInterval(timer);
+        }
+    }, 1000);
 };
 
 const initRankingSlider = () => {
@@ -188,10 +292,13 @@ const initTopButton = () => {
 };
 
 (() => {
+    initSectionReveal();
     initHeroSwiper();
     initHeroControl();
     initPromotionSlider();
+    initPromotionHeartButtons();
     initLiveSlider();
+    initLiveCountdown();
     initRankingSlider();
     initTopButton();
 })();

@@ -4,10 +4,41 @@
     --color-white: #fff;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 *,
 *::before,
 *::after {
     box-sizing: border-box;
+}
+
+.reveal-section {
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+        opacity 0.8s ease-out,
+        transform 0.8s ease-out;
+    will-change: opacity, transform;
+}
+
+.reveal-section.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .reveal-section,
+    .reveal-section.active {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }
 
 button {
@@ -185,7 +216,24 @@ button {
     width: 20px;
     height: 20px;
     object-fit: contain;
+    opacity: 1;
     transform: scaleY(-1);
+    transition: opacity 0.2s ease;
+}
+
+#hero .control-icon.play {
+    object-fit: none;
+    opacity: 0;
+    filter: brightness(0) invert(1);
+    transform: rotate(90deg);
+}
+
+#hero .control.is-paused .control-icon.pause {
+    opacity: 0;
+}
+
+#hero .control.is-paused .control-icon.play {
+    opacity: 1;
 }
 
 #hero .progress {
@@ -331,6 +379,7 @@ button {
 }
 
 .main .con1 .card-actions button {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -343,6 +392,30 @@ button {
     width: 24px;
     height: 24px;
     object-fit: contain;
+}
+
+.main .con1 .card-actions button:nth-child(2) :is(.heart-icon-default, .heart-icon-active) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease;
+}
+
+.main .con1 .card-actions .heart-icon-default {
+    opacity: 1;
+}
+
+.main .con1 .card-actions .heart-icon-active {
+    opacity: 0;
+}
+
+.main .con1 .card-actions button.is-liked .heart-icon-default {
+    opacity: 0;
+}
+
+.main .con1 .card-actions button.is-liked .heart-icon-active {
+    opacity: 1;
 }
 
 .main .con1 .card-stats {
@@ -425,6 +498,28 @@ button {
     right: -40px;
 }
 
+.main .con1 .slide-button .button-icon {
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.2s ease;
+}
+
+.main .con1 .slide-button .button-icon.hover {
+    opacity: 0;
+}
+
+.main .con1 .slide-button.prev .button-icon.hover {
+    transform: scaleX(-1);
+}
+
+.main .con1 .slide-button:is(:hover, :focus-visible) .button-icon.default {
+    opacity: 0;
+}
+
+.main .con1 .slide-button:is(:hover, :focus-visible) .button-icon.hover {
+    opacity: 1;
+}
+
 .main .con .main-tag {
     position: absolute;
     display: flex;
@@ -464,6 +559,19 @@ button {
     color: #333;
     font-size: 14px;
     transform: translateX(-50%);
+    transition:
+        border-color 0.3s ease,
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.main .con1 .more:hover,
+.main .con1 .more:focus-visible,
+.main .con2 .more:hover,
+.main .con2 .more:focus-visible {
+    border-color: #404040;
+    background-color: #404040;
+    color: var(--color-white);
 }
 
 .main .con :is(a, button):focus-visible {
@@ -612,6 +720,26 @@ button {
     max-width: none;
 }
 
+.main .con2 .live-slide .button-icon {
+    transition: opacity 0.2s ease;
+}
+
+.main .con2 .live-slide .button-icon.hover {
+    opacity: 0;
+}
+
+.main .con2 .live-slide.prev .button-icon.hover {
+    transform: scaleX(-1);
+}
+
+.main .con2 .live-slide:is(:hover, :focus-visible) .button-icon.default {
+    opacity: 0;
+}
+
+.main .con2 .live-slide:is(:hover, :focus-visible) .button-icon.hover {
+    opacity: 1;
+}
+
 .main .con2 .live-slide.prev {
     left: -40px;
 }
@@ -659,6 +787,7 @@ button {
 .main .con3 .ranking-group {
     width: 100%;
     height: 412px;
+    background: transparent !important;
     text-align: left;
 }
 
@@ -798,6 +927,26 @@ button {
     width: 98px;
     height: 98px;
     max-width: none;
+}
+
+.main .con3 .ranking-slide .button-icon {
+    transition: opacity 0.2s ease;
+}
+
+.main .con3 .ranking-slide .button-icon.hover {
+    opacity: 0;
+}
+
+.main .con3 .ranking-slide.prev .button-icon.hover {
+    transform: scaleX(-1);
+}
+
+.main .con3 .ranking-slide:is(:hover, :focus-visible) .button-icon.default {
+    opacity: 0;
+}
+
+.main .con3 .ranking-slide:is(:hover, :focus-visible) .button-icon.hover {
+    opacity: 1;
 }
 
 .main .con3 .ranking-slide.prev {

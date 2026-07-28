@@ -148,20 +148,40 @@ img {
 }
 
 #skipNav a {
-    position: fixed;
-    top: 0;
-    left: 50%;
+    position: absolute;
+    top: -500px;
+    left: 0;
     z-index: 1000;
     padding: 12px 24px;
     color: #fff;
+    width: 100%;
+    line-height: 50px;
     background-color: #000;
-    transform: translate(-50%, -100%);
-    transition: transform 0.2s ease;
 }
 
 #skipNav a:focus,
 #skipNav a:active,
 #skipNav a:hover {
-    transform: translate(-50%, 0);
+    top: 0;
 }
 
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
