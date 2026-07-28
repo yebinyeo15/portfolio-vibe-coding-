@@ -365,6 +365,13 @@ button {
     width: 270px;
     height: 468px;
     object-fit: cover;
+    transform: scale(1);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.main .con1 .promotion-card:hover .card-image,
+.main .con1 .promotion-card:focus-within .card-image {
+    transform: scale(1.02);
 }
 
 .main .con1 .card-actions {
@@ -802,9 +809,22 @@ button {
 }
 
 .main .con3 .ranking-card {
+    position: relative;
+    z-index: 0;
     width: 328px;
     height: 196px;
     background: var(--color-white);
+    transform: scale(1);
+    transition:
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.3s ease;
+}
+
+.main .con3 .ranking-card:hover,
+.main .con3 .ranking-card:focus-within {
+    z-index: 1;
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
 }
 
 .main .con3 .ranking-card a {
@@ -813,6 +833,13 @@ button {
     width: 100%;
     height: 100%;
     color: var(--color-black);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .main .con1 .card-image,
+    .main .con3 .ranking-card {
+        transition: none;
+    }
 }
 
 .main .con3 .ranking-image {
